@@ -21,3 +21,4 @@ new_line: .asciiz     "\n"
                 here:   j here
                 li 	$v0, 10             #exit 
                 syscall
+                
