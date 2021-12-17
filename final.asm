@@ -1,4 +1,4 @@
-# #
+# 
 # Finalproject.asm
 #
 # Rushma Basnet Thapa
@@ -23,4 +23,33 @@ new_line: .asciiz     "\n"
                 syscall
 
                 .ktext  0x80000180 
+            
                 sw     	$v0, s1 
+                sw      $a0, s2
+            mfc0 	$k0, $13    #cause register
+            srl     $a0, $k0, 2     #extract excode field
+            andi    $a0, $a0, 0x1f 
+            bne     $a0, $zero, kdone   #exception code is I/O
+            lui     $v0, 0xffff  
+            lw      $a0, 4($v0)     #getting input key
+            li      $t8, 'q'  
+            beq     $a0, $t8, done
+            li 	$v0,1     		#   print it here.      
+		   syscall 
+            li $v0,4     			#   print the new line     
+		    la $a0,   new_line
+		    syscall 
+            kdone:  lw     	$v0, s1     
+                    lw     	$a0, s2 
+                    mtc0 	$0, 13 #clear the register
+                    mfc0 	$k0, $12  #set register status
+                    andi    $k0, 0xfffd
+                    ori     $k0,  0x11
+                    mtc0 	$k0, $12     	#   write back to status     
+		            eret    			 	# return
+                    
+done: li $v0 10
+syscall
+
+
+                    
