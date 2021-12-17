@@ -21,4 +21,6 @@ new_line: .asciiz     "\n"
                 here:   j here
                 li 	$v0, 10             #exit 
                 syscall
-                
+
+                .ktext  0x80000180 
+                sw     	$v0, s1 
